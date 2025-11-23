@@ -11,12 +11,15 @@ struct Edge {
 typedef pair<int, int> Pair;  // Creates alias 'Pair' for the pair<int,int> data type
 
 class Graph {
-public:
-    // a vector of vectors of Pairs to represent an adjacency list
-    vector<vector<Pair>> adjList;
 
-    // Graph Constructor
-    Graph(vector<Edge> const &edges) {
+private:
+vector<vector<Pair>> adjList;// encapsulation to keep data private
+void DFSRecursive(int current, vector<bool>& visited);
+
+
+public:
+// Graph Constructor
+ Graph(vector<Edge> const &edges) {
         // resize the vector to hold SIZE elements of type vector<Edge>
         adjList.resize(SIZE);
 
@@ -43,7 +46,21 @@ public:
             cout << endl;
         }
     }
+
+//Adding DFS graph class
+void DFS(int startVertex) {
+    vector<bool> visited(SIZE, false);
+    cout<< "DFS starting from vertex" << startVertex<< ":"<<endl;
+    DFSRecursive(startVertex, visited);
+    cout<<endl;
+}
+ void BFS(int startVertex);
+
 };
+
+
+
+
 
 
 
@@ -59,6 +76,6 @@ int main() {
 
     // Prints adjacency list representation of graph
     graph.printGraph();
-
+    graph.
     return 0;
 }
