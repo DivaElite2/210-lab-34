@@ -16,7 +16,7 @@ class Graph {
 private:
 vector<vector<Pair>> adjList;// encapsulation to keep data private
 void BFSRecursive(int current, vector<bool>& visited);
-void DFSRecursive()
+void DFSRecursive(int current, vector<bool>& visited);
 
 public:
 // Graph Constructor
@@ -74,6 +74,8 @@ void BFS(int startVertex) {
     }
     cout << endl;
 }
+
+void DFS(int startVertex);
  
 
 };
@@ -90,7 +92,16 @@ void Graph::BFSRecursive(int current,vector<bool>& visited ){
     }
 }
 
+void Graph::DFS(int startVertex) {
+    vector <bool> visited(SIZE, false);
+    cout <<"DFS starting from vertex " << startVertex << ":" << endl;
+    DFSRecursive(startVertex, visited);
+    cout << endl;
+}
 
+void Graph::DFSRecursive(vector<bool>& visited) {
+
+}
 
 
 
