@@ -1,10 +1,11 @@
 #include <iostream>
+#include <climits>
 #include <vector>
 #include <queue>
 #include <map>
 using namespace std;
 
-const int SIZE = 13;
+const int SIZE = 11;
 
 struct Edge {
     int src, dest, weight;
@@ -122,6 +123,58 @@ public:
             cout << endl;
         }
         cout << endl;
+    }
+    // NEW: Minimum Spanning Tree for Transportation Network
+    void buildOptimalNetwork() {
+        vector<int> key(SIZE, INT_MAX);
+        vector<int> parent(SIZE, -1);
+        vector<bool> inMST(SIZE, false);
+        priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+
+        // Start from Central Station
+        key[0] = 0;
+        pq.push(make_pair(0, 0));
+
+        cout << "=== OPTIMAL NETWORK INFRASTRUCTURE ===" << endl;
+        cout << "Building most efficient connection network:" << endl << endl;
+
+        while (!pq.empty()) {
+            int current = pq.top().second;
+            pq.pop();
+
+            inMST[current] = true;
+
+            for (Pair neighbor : adjList[current]) {
+                int neighborVertex = neighbor.first;
+                int weight = neighbor.second;
+
+                if (!inMST[neighborVertex] && weight < key[neighborVertex]) {
+                    key[neighborVertex] = weight;
+                    parent[neighborVertex] = current;
+                    pq.push(make_pair(weight, neighborVertex));
+                }
+            }
+        }
+              // Display the optimal network
+        cout << "🏗️  MINIMUM SPANNING TREE CONNECTIONS:" << endl;
+        int totalCost = 0;
+        int connectionCount = 0;
+        
+        for (int i = 1; i < SIZE; i++) {
+            if (parent[i] != -1 && stationNames.find(i) != stationNames.end() && 
+                stationNames.find(parent[i]) != stationNames.end()) {
+                connectionCount++;
+                cout << "   " << connectionCount << ". " << stationNames[parent[i]] 
+                     << " ←[" << key[i] << "min]→ " << stationNames[i] << endl;
+                totalCost += key[i];
+            }
+        }
+        
+        cout << endl << "📊 NETWORK SUMMARY:" << endl;
+        cout << "   • Total Connections: " << connectionCount << endl;
+        cout << "   • Total Infrastructure Cost: " << totalCost << " minutes" << endl;
+        cout << "   • Average Connection Cost: " << (totalCost / (double)connectionCount) << " minutes" << endl;
+        cout << "   • All stations connected with minimum total travel time" << endl << endl;
     }
 
 private:
