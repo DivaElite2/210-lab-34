@@ -99,8 +99,16 @@ void Graph::DFS(int startVertex) {
     cout << endl;
 }
 
-void Graph::DFSRecursive(vector<bool>& visited) {
+void Graph::DFSRecursive(int current, vector<bool>& visited) {
+    visited [current] = true;
+    cout<< current << " ";
+    for(Pair neighbor: adjList[current]) {
+        int neighborVertex = neighbor.first;
+        if(!visited[neighborVertex]) {
+            DFSRecursive(neighborVertex, visited);
+        }
 
+    }
 }
 
 
@@ -120,5 +128,6 @@ int main() {
     // Prints adjacency list representation of graph
     graph.printGraph();
     graph.BFS(0);
+    graph.DFS(0);
     return 0;
 }
