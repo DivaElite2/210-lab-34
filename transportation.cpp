@@ -5,7 +5,7 @@
 #include <map>
 using namespace std;
 
-const int SIZE = 11;
+const int SIZE = 13;
 
 struct Edge {
     int src, dest, weight;
@@ -220,6 +220,53 @@ private:
 
 };
 
+// Menu Functions
+void displayMenu() {
+    cout << "\n=========================================" << endl;
+    cout << "   🚇 CITY TRANSPORTATION PLANNER 🚇" << endl;
+    cout << "=========================================" << endl;
+    cout << "1. View Transportation Network Map" << endl;
+    cout << "2. Find Fastest Exploration Route (DFS)" << endl;
+    cout << "3. Find Optimal Station Coverage (BFS)" << endl;
+    cout << "4. Calculate Shortest Path Between Stations" << endl;
+    cout << "5. Build Optimal Network Infrastructure (MST)" << endl;
+    cout << "6. Run All Analyses" << endl;
+    cout << "7. Exit" << endl;
+    cout << "=========================================" << endl;
+    cout << "Enter your choice (1-7): ";
+}
+
+void runAllAnalyses(Graph& transportSystem) {
+    cout << "\n🚀 RUNNING COMPREHENSIVE TRANSPORTATION ANALYSIS..." << endl;
+    transportSystem.printTransportMap();
+    transportSystem.findFastestRoutes(0);
+    transportSystem.findOptimalCoverage(0);
+    transportSystem.findShortestPath(0, 10);
+    transportSystem.buildOptimalNetwork();
+}
+
+int getStationInput(const string& prompt, Graph& transportSystem) {
+    cout << "\nAvailable Stations:" << endl;
+    for (int i = 0; i < SIZE; i++) {
+        if (transportSystem.stationNames.find(i) != transportSystem.stationNames.end()) {
+            cout << i << ". " << transportSystem.stationNames[i] << endl;
+        }
+    }
+    
+    int station;
+    cout << prompt;
+    cin >> station;
+    
+    while (station < 0 || station >= SIZE || 
+           transportSystem.stationNames.find(station) == transportSystem.stationNames.end()) {
+        cout << "Invalid station! Please enter a valid station number: ";
+        cin >> station;
+    }
+    
+    return station;
+}
+
+
 int main() {
     // Transportation network edges: (station1, station2, travel_time_minutes)
     vector<Edge> edges = {
@@ -229,6 +276,59 @@ int main() {
     };
 
     Graph transportSystem(edges);
+    int choice;
+
+    do {
+        displayMenu();
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                transportSystem.printTransportMap();
+                break;
+                
+            case 2: {
+                int start = getStationInput("Enter starting station number: ", transportSystem);
+                transportSystem.findFastestRoutes(start);
+                break;
+            }
+                
+            case 3: {
+                int start = getStationInput("Enter starting station number: ", transportSystem);
+                transportSystem.findOptimalCoverage(start);
+                break;
+            }
+                
+            case 4: {
+                int start = getStationInput("Enter starting station number: ", transportSystem);
+                int end = getStationInput("Enter destination station number: ", transportSystem);
+                transportSystem.findShortestPath(start, end);
+                break;
+            }
+                
+            case 5:
+                transportSystem.buildOptimalNetwork();
+                break;
+                
+            case 6:
+                runAllAnalyses(transportSystem);
+                break;
+                
+            case 7:
+                cout << "\nThank you for using City Transportation Planner! Goodbye! 🚇" << endl;
+                break;
+                
+            default:
+                cout << "Invalid choice! Please enter 1-7." << endl;
+        }
+        
+        if (choice != 7) {
+            cout << "\nPress Enter to continue...";
+            cin.ignore();
+            cin.get();
+        }
+        
+    } while (choice != 7);
 
     // Application Interface
     cout << "🚇 CITY TRANSPORTATION PLANNER 🚇" << endl;
