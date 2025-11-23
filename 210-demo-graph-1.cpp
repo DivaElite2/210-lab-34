@@ -102,8 +102,8 @@ void Graph::DFS(int startVertex) {
 void Graph::DFSRecursive(int current, vector<bool>& visited) {
     visited [current] = true;
     cout<< current << " ";
-    for(Pair neighbor: adjList[current]) {
-        int neighborVertex = neighbor.first;
+    for(int i = adjList[current].size() - 1; i >= 0; i--) { //reverse order
+        int neighborVertex = adjList[current][i].first;
         if(!visited[neighborVertex]) {
             DFSRecursive(neighborVertex, visited);
         }
