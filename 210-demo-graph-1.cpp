@@ -47,7 +47,7 @@ public:
         }
     }
 
-//Adding DFS graph class
+//Adding DFS graph 
 void DFS(int startVertex) {
     vector<bool> visited(SIZE, false);
     cout<< "DFS starting from vertex" << startVertex<< ":"<<endl;
@@ -57,6 +57,10 @@ void DFS(int startVertex) {
  void BFS(int startVertex);
 
 };
+
+void Graph::DFSRecursive(int current,vector<bool>& visited ){
+    
+}
 
 
 
@@ -76,6 +80,6 @@ int main() {
 
     // Prints adjacency list representation of graph
     graph.printGraph();
-    graph.
+    graph.DFS(0);
     return 0;
 }
