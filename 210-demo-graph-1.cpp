@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 
 const int SIZE = 7;
@@ -15,7 +16,7 @@ class Graph {
 private:
 vector<vector<Pair>> adjList;// encapsulation to keep data private
 void BFSRecursive(int current, vector<bool>& visited);
-
+void DFSRecursive()
 
 public:
 // Graph Constructor
@@ -47,12 +48,31 @@ public:
         }
     }
 
-//Adding BFS graph 
+
+
+
 void BFS(int startVertex) {
     vector<bool> visited(SIZE, false);
-    cout<< "BFS starting from vertex" << startVertex<< ":"<<endl;
-    BFSRecursive(startVertex, visited);
-    cout<<endl;
+    queue<int> q;
+    
+    cout << "BFS starting from vertex " << startVertex << ":" << endl;
+    visited[startVertex] = true;
+    q.push(startVertex);
+    
+    while (!q.empty()) {
+        int current = q.front();
+        q.pop();
+        cout << current << " ";
+        
+        for (Pair neighbor : adjList[current]) {
+            int neighborVertex = neighbor.first;
+            if (!visited[neighborVertex]) {
+                visited[neighborVertex] = true;
+                q.push(neighborVertex);
+            }
+        }
+    }
+    cout << endl;
 }
  
 
