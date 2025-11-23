@@ -14,7 +14,7 @@ class Graph {
 
 private:
 vector<vector<Pair>> adjList;// encapsulation to keep data private
-void DFSRecursive(int current, vector<bool>& visited);
+void BFSRecursive(int current, vector<bool>& visited);
 
 
 public:
@@ -47,19 +47,27 @@ public:
         }
     }
 
-//Adding DFS graph 
-void DFS(int startVertex) {
+//Adding BFS graph 
+void BFS(int startVertex) {
     vector<bool> visited(SIZE, false);
-    cout<< "DFS starting from vertex" << startVertex<< ":"<<endl;
-    DFSRecursive(startVertex, visited);
+    cout<< "BFS starting from vertex" << startVertex<< ":"<<endl;
+    BFSRecursive(startVertex, visited);
     cout<<endl;
 }
- void BFS(int startVertex);
+ 
 
 };
 
-void Graph::DFSRecursive(int current,vector<bool>& visited ){
-    
+void Graph::BFSRecursive(int current,vector<bool>& visited ){
+    visited [current] = true;
+    cout << current << " ";
+    for(Pair neighbor: adjList[current]) {
+        int neighborVertex = neighbor.first;
+        if(!visited[neighborVertex]) {
+            BFSRecursive(neighborVertex, visited);
+        }
+
+    }
 }
 
 
@@ -80,6 +88,6 @@ int main() {
 
     // Prints adjacency list representation of graph
     graph.printGraph();
-    graph.DFS(0);
+    graph.BFS(0);
     return 0;
 }
