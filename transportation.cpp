@@ -81,6 +81,49 @@ public:
         cout << "No direct connection found." << endl;
     }
 
+      void findShortestPath(int startStation, int endStation) {
+        vector<int> dist(SIZE, INT_MAX);
+        vector<int> parent(SIZE, -1);
+        priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+
+        dist[startStation] = 0;
+        pq.push(make_pair(0, startStation));
+
+        cout << "=== SHORTEST PATH CALCULATION ===" << endl;
+        cout << "Finding fastest route from " << stationNames[startStation] 
+             << " to " << stationNames[endStation] << endl;
+
+        while (!pq.empty()) {
+            int current = pq.top().second;
+            int currentDist = pq.top().first;
+            pq.pop();
+
+            if (current == endStation) break;
+
+            for (Pair neighbor : adjList[current]) {
+                int neighborVertex = neighbor.first;
+                int weight = neighbor.second;
+                int newDist = currentDist + weight;
+
+                if (newDist < dist[neighborVertex]) {
+                    dist[neighborVertex] = newDist;
+                    parent[neighborVertex] = current;
+                    pq.push(make_pair(newDist, neighborVertex));
+                }
+            }
+        }
+        // Print the shortest path
+        if (dist[endStation] == INT_MAX) {
+            cout << "No path exists between these stations!" << endl;
+        } else {
+            cout << "🚀 FASTEST ROUTE: " << dist[endStation] << " minutes" << endl;
+            cout << "📍 PATH: ";
+            printPath(parent, endStation);
+            cout << endl;
+        }
+        cout << endl;
+    }
+
 private:
     void DFSRecursive(int current, vector<bool>& visited) {
         visited[current] = true;
@@ -113,6 +156,15 @@ private:
             }
         }
     }
+
+    void printPath(vector<int>& parent, int station) {
+        if (parent[station] != -1) {
+            printPath(parent, parent[station]);
+        }
+        cout << stationNames[station];
+        if (station != parent.size() - 1) cout << " → ";
+    }
+
 };
 
 int main() {
